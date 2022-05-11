@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      	$id = $_POST['edit_id'] ; 
                 	  	$name = $_POST['name'] ; 
 				   		$mobile = $_POST['mobile']; 
-				   	  $file_tmp=$_FILES['image_personal']['tmp_name'];
+				    	  $file_tmp=$_FILES['image_personal']['tmp_name'];
 				   		 $file_name =$_FILES['image_personal']['name']; 
     					$address = $_POST['address'] ; 
     					$NameCategory = $_POST['NameCategory'];
@@ -49,22 +49,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    						 $upload_path='upload/'. $file_newname;
    						 move_uploaded_file($file_tmp, $upload_path);
    					    $imgUdat = str_replace('../', '', $upload_path);
-                       
-                   if (!empty($id) && !empty($name) && !empty($mobile) && !empty($address) && !empty($NameCategory && !empty($imgUdat)) ) {
+                    
+ if (!empty($id) && !empty($name) && !empty($mobile) && !empty($address) && !empty($NameCategory)  ) {
 
-
-                        $query = "update stores set name = '$name' , mobile =  '$mobile' , 
+                        if (!empty($file_name)) {
+                         $query = "update stores set name = '$name' , mobile =  '$mobile' , 
                         address = '$address' , category_id =  $NameCategory , img = '$imgUdat'
                          where id = $id " ; 
-                    	$result = mysqli_query($connection , $query)  ; 
-                     	if ($result) {
-                    		echo     
+                        $result = mysqli_query($connection , $query)  ; 
+                        if ($result) {
+                            echo     
                   
-                     		    header("Location:Store.php");
+                                header("Location:Store.php");
 
-                    		 ;
-                      	}else{
-                     		echo '
+                             ;
+                        }else{
+                            echo '
                             <div class = "row " > 
                             <div class = "col-12">
                             <div class = "alert alert-danger "> some filed are missing 
@@ -72,11 +72,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             </div>
 
-                    		' ; 
+                            ' ; 
 
-							} 
+                            }                        
+                             }else{
+                       $query = "update stores set name = '$name' , mobile =  '$mobile' , 
+                        address = '$address' , category_id =  $NameCategory 
+                         where id = $id " ; 
+                        $result = mysqli_query($connection , $query)  ; 
+                        if ($result) {
+                            echo     
+                  
+                                header("Location:Store.php");
+
+                             ;
+                        }else{
+                            echo '
+                            <div class = "row " > 
+                            <div class = "col-12">
+                            <div class = "alert alert-danger "> some filed are missing 
+                            </div>
+                            </div>
+                            </div>
+
+                            ' ; 
+
+                        }
+                   
                     }   	                 
                       }
+                  }
 
 
 	?>
