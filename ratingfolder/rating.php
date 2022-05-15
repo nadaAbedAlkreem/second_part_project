@@ -32,7 +32,7 @@ session_start();
 		
 
 				
-				<div class="grid_16"  style="margin-left: 450px;  ">
+				<div class="grid_16"  style="margin-left: 350px;  ">
 					<table  >
 						<thead>
 							<tr>
@@ -40,7 +40,8 @@ session_start();
 							   	<th>name Store</th>		
   								<th>date rating </th>
 								<th>ip address </th>		
-									<th>count </th>						
+									<th>count </th>			
+							  	<th> trend Store </th>									
  							</tr>
 						</thead>
 					 
@@ -51,9 +52,16 @@ session_start();
 							  
    $query = "SELECT ratings.id ,count(ratings.id) as count , avg(ratings.value) as avg , stores.name ,  ratings.date , ratings.idAddress  , COUNT(ratings.store_id) from ratings , stores where ratings.store_id = stores.id GROUP BY ratings.store_id ";
                             $result = mysqli_query($connection , $query) ; 
+                          
                          if(mysqli_num_rows($result) >0 ){
                          	while ($row = mysqli_fetch_assoc($result)) {
-        echo '<tr>'.'<td>'.$row['avg'].'</td>'.''.'<td>'.$row['name'].'</td>'.'<td>'.$row['date'].'</td>'.'<td>'.$row['idAddress'].'</td>'.'<td>'.$row['count'].'</td>'.'</tr>' ;
+                              $trend = 0 ; 
+                             if( $row['avg'] >= 2.5){
+                               $trend = 1 ; 
+                             }else {
+                             	$trend = -1 ; 
+                             }
+        echo '<tr>'.'<td>'.$row['avg'].'</td>'.''.'<td>'.$row['name'].'</td>'.'<td>'.$row['date'].'</td>'.'<td>'.$row['idAddress'].'</td>'.'<td>'.$row['count'].'</td>'.'<td>'.$trend.'</td>'.'</tr>' ;
                          		  
                           	} 
  
